@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+      nodejs: 20
+    commands:
+      - node -v && java -version
+      - npm ci
+
+  pre_build:
+    commands:
+      - yes | sdkmanager --licenses >/dev/null 2>&1 || true
+
+  build:
+    commands:
+      - cd android
+      - chmod +x ./gradlew
+      - ./gradlew assembleDebug --no-daemon
+      # --no-daemon: each CI build is a fresh, short-lived instance, so a persistent
+      # Gradle daemon buys nothing and can cause flaky behavior. Disable it in CI.
+
+artifacts:
+  files:
+    - android/app/build/outputs/apk/debug/app-debug.apk
