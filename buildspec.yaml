@@ -5,9 +5,12 @@ phases:
     runtime-versions:
       java: corretto17
       nodejs: 22
-    commands:
-      - node -v && npm -v
-      - npm ci
+      commands:
+            - node -v && npm -v
+            - git rev-parse HEAD
+            - md5sum package-lock.json package.json
+            - grep -n "picomatch\|overrides\|resolutions" package.json || true
+            - npm ci
 
   pre_build:
     commands:
