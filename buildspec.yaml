@@ -14,7 +14,10 @@ phases:
 
   pre_build:
     commands:
+      - echo "ANDROID_HOME=$ANDROID_HOME"; ls "$ANDROID_HOME/platforms" 2>/dev/null || echo "NO SDK"
       - yes | sdkmanager --licenses >/dev/null 2>&1 || true
+      - echo "ANDROID_HOME=$ANDROID_HOME"; ls "$ANDROID_HOME/platforms" 2>/dev/null || echo "NO SDK"
+
 
   build:
     commands:
