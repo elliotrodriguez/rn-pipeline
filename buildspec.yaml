@@ -14,9 +14,17 @@ phases:
 
   pre_build:
     commands:
-      - echo "ANDROID_HOME=$ANDROID_HOME"; ls "$ANDROID_HOME/platforms" 2>/dev/null || echo "NO SDK"
-      - yes | sdkmanager --licenses >/dev/null 2>&1 || true
-      - echo "ANDROID_HOME=$ANDROID_HOME"; ls "$ANDROID_HOME/platforms" 2>/dev/null || echo "NO SDK"
+      # - echo "ANDROID_HOME=$ANDROID_HOME"; ls "$ANDROID_HOME/platforms" 2>/dev/null || echo "NO SDK"
+      # - yes | sdkmanager --licenses >/dev/null 2>&1 || true
+      # - echo "ANDROID_HOME=$ANDROID_HOME"; ls "$ANDROID_HOME/platforms" 2>/dev/null || echo "NO SDK"
+      - export ANDROID_HOME=/usr/local/android-sdk
+      - mkdir -p $ANDROID_HOME/cmdline-tools
+      - curl -sSL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o /tmp/cmdline-tools.zip
+      - unzip -q /tmp/cmdline-tools.zip -d $ANDROID_HOME/cmdline-tools
+      - mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/latest
+      - export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+      - yes | sdkmanager --licenses >/dev/null
+      - sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
 
   build:
