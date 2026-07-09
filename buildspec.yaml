@@ -4,7 +4,7 @@ phases:
   install:
     runtime-versions:
       java: corretto17
-      nodejs: 20
+      nodejs: 22
     commands:
       - node -v && java -version
       - npm ci
